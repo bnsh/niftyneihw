@@ -9,9 +9,6 @@ import json
 def reverseendian(val):
     return "".join(reversed([val[idx:idx+2] for idx in range(0, len(val), 2)]))
 
-def satoshis(hexval):
-    return int(reverseendian(hexval), 16)
-
 #pylint: disable=too-many-locals
 def parse_transaction(raw_hex):
     pos = 0

@@ -1,6 +1,7 @@
-RCS
-__pycache__
 .bitcoin-cookie
 bitcoin_lib.py
 common_config.py
+local.mk
+__pycache__
 .*.pylint3
+RCS
