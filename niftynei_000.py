@@ -1,5 +1,6 @@
 #! /usr/bin/env python3
 # vim: expandtab shiftwidth=4 tabstop=4
+# pylint: disable=invalid-name
 
 """Parse raw_hex transaction"""
 
@@ -11,6 +12,7 @@ def reverseendian(val):
 def satoshis(hexval):
     return int(reverseendian(hexval), 16)
 
+#pylint: disable=too-many-locals
 def parse_transaction(raw_hex):
     pos = 0
 
@@ -48,7 +50,7 @@ def parse_transaction(raw_hex):
     pos += 2
 
     outputs = []
-    for oidx in range(0, output_count):
+    for dummy_oidx in range(0, output_count):
         amount = int(reverseendian(raw_hex[pos:(pos+16)]), 16)
         pos += 16
 
@@ -80,6 +82,7 @@ def parse_transaction(raw_hex):
         "locktime": locktime
     }
     return parsed_tx
+#pylint: enable=too-many-locals
 
 def main():
     #pylint: disable=line-too-long

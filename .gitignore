@@ -3,3 +3,4 @@ __pycache__
 .bitcoin-cookie
 bitcoin_lib.py
 common_config.py
+.*.pylint3
