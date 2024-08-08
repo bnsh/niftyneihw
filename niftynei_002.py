@@ -6,7 +6,6 @@
 
 import json
 from decimal import Decimal
-from bitcoin_lib import grab_raw_proxy
 
 def reverseendian(val):
     return "".join(reversed([val[idx:idx+2] for idx in range(0, len(val), 2)]))
@@ -102,13 +101,6 @@ def default(val):
     if isinstance(val, Decimal):
         return float(val)
     raise TypeError(type(val))
-
-def grab_input_amounts(txid, vout):
-    proxy = grab_raw_proxy()
-    raw_tx = proxy.getrawtransaction(txid)
-    decoded_tx = proxy.decoderawtransaction(raw_tx)
-    # print(decoded_tx["vout"][vout])
-    return int(decoded_tx["vout"][vout]["value"] * 1_0000_0000)
 
 def main():
     #pylint: disable=line-too-long
