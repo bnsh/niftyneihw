@@ -21,3 +21,15 @@ def grab_opcodes(fname=None):
         assert all(isinstance(val[1], str) for _, val in raw.items())
         cooked = {int(re.sub(r'^0x([0-9a-f]{2})$', r'\1', key), 16): val for key, val in raw.items()}
         return cooked
+
+def grab_mnemonic2code(fname=None):
+    fname = fname or localfile("opcodes.json")
+    with open(fname, "rt", encoding="utf-8-sig") as jsfp:
+        raw = json.load(jsfp)
+        assert all(re.match(r'^0x[0-9a-f]{2}$', key) for key, _ in raw.items())
+        assert all(isinstance(val, list) for _, val in raw.items())
+        assert all(len(val) == 2 for _, val in raw.items())
+        assert all(isinstance(val[0], str) for _, val in raw.items())
+        assert all(isinstance(val[1], str) for _, val in raw.items())
+        cooked = {val[0]: int(re.sub(r'^0x([0-9a-f]{2})$', r'\1', key), 16) for key, val in raw.items()}
+        return cooked

@@ -1,5 +1,5 @@
-PYTHON=$(sort $(wildcard *.py))
-PYLINT3=$(addprefix .,$(PYTHON:py=pylint3))
+PYTHON=$(sort $(shell find . -type f -name '*.py' -print))
+PYLINT3=$(join $(dir $(PYTHON)), $(addprefix ., $(notdir $(PYTHON:py=pylint3))))
 
 all: pylint
 
