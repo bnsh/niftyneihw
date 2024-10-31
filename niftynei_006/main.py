@@ -137,6 +137,7 @@ def main():
     res = json.loads(bcr("gettransaction", funding_txid_big_endian))
     vout_raw = res["details"][0]["vout"]
     vout = bytes([vout_raw, 0, 0, 0]).hex() # This is bad. Really we should be converting this to an _int_ and then using pack or something to turn the int into a byte array.
+    # vout = (1).to_bytes(4, 'little').hex() # This is better, but I haven't tested it, and I'd rather test it if I were to uncomment this.
 
     # We're not using sequence for anything fancy here, so let's just set it to 'ffffffff', the max val
     sequence = 'ffffffff'
