@@ -251,7 +251,7 @@ def main():
         ],  # just copy the hex string for the output here, amount and scriptPubKey
         'locktime': raw_tx_hex_no_input[30 + scriptPubKeyLen:]
     }
-    print(json.dumps(raw_tx, indent=4))
+    # print(json.dumps(raw_tx, indent=4))
 
     ## Inserting our Input and Witness data
 
@@ -276,7 +276,7 @@ def main():
         raw_tx['output_count'] + \
         raw_tx['outputs'][0] + \
         raw_tx['witness'] + raw_tx['locktime']
-    print(json.dumps(raw_tx, indent=4))
+    # print(json.dumps(raw_tx, indent=4))
 
     # TODO: uncomment the print statement and hit the Green 'Run' button to see your work so far in the console.
     # print('raw_tx_final_hex:', raw_tx_final_hex, '\n')
@@ -286,14 +286,18 @@ def main():
     # Our TX is ready to broadcast! If you did everything per the instructions above, you should be able to run:
     #
     # bcr testmempoolaccept '["your-final-tx-hex"]'
-    # Binesh TODO: This is failing
-    bcr("testmempoolaccept", json.dumps([raw_tx_final_hex]))
+    # Binesh TODO: This is _still_ failing
+    res = json.loads(
+        bcr("testmempoolaccept", json.dumps([raw_tx_final_hex])).strip()
+    )
     #
     # and it should return 'allowed: true' in the json
+    assert res[0]["allowed"], res
 
     # If it returned true, it's valid and ready to send!! Let's sweep our bitcoin back, unlocking the P2WSH, by running,
     #
     # bcr sendrawtransaction your-complete-tx-hex
+    # bcr("sendrawtransaction", raw_tx_final_hex)
 
     ### CONGRATULATIONS!! YOUVE JUST BUILT YOUR FIRST PW2SH LOCKING AND UNLOCKING TXS BY HAND!!!
 
