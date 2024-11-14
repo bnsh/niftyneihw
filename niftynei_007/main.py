@@ -247,7 +247,7 @@ def main():
         'inputs': [],
         'output_count': '01',
         'outputs': [
-            raw_tx_hex_no_input[30:30 + outaddrlen]
+            raw_tx_hex_no_input[12:30 + outaddrlen]
         ],  # just copy the hex string for the output here, amount and scriptPubKey
         'locktime': raw_tx_hex_no_input[30 + outaddrlen:]
     }
