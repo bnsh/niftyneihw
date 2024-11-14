@@ -240,16 +240,16 @@ def main():
     print('raw_tx_hex_no_input:', raw_tx_hex_no_input, '\n')
 
     # TODO: parse out that transaction data to fill in the following fields, all as hex:
-    outaddrlen = int(raw_tx_hex_no_input[28:30], 16) * 2
+    scriptPubKeyLen = int(raw_tx_hex_no_input[28:30], 16) * 2
     raw_tx = {
         'version': raw_tx_hex_no_input[:8],
         'input_count': '01',
         'inputs': [],
         'output_count': '01',
         'outputs': [
-            raw_tx_hex_no_input[12:30 + outaddrlen]
+            raw_tx_hex_no_input[12:30 + scriptPubKeyLen]
         ],  # just copy the hex string for the output here, amount and scriptPubKey
-        'locktime': raw_tx_hex_no_input[30 + outaddrlen:]
+        'locktime': raw_tx_hex_no_input[30 + scriptPubKeyLen:]
     }
     print(json.dumps(raw_tx, indent=4))
 
