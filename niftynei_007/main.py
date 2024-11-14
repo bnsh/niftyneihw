@@ -162,7 +162,7 @@ def main():
     # TODO: Fill in the following segwit input skeleton with your info
     input_segwit = {
         'txid': res["txid"],
-        'vout': f"{vout:02x}",
+        'vout': (1).to_bytes(4, 'little').hex(), # Sarah, this was our bug on 2024-11-13
         'scriptSig': '00',
         'sequence': sequence
     }
