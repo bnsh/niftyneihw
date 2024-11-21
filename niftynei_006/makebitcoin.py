@@ -36,6 +36,7 @@ def create_wallet(wallet_name):
         ],
             check=True)
     run(["/usr/bin/env", "bitcoin-cli", "-regtest", "loadwallet", wallet_name],
+        capture_output=True,
         check=False)
 
 
