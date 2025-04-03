@@ -1,6 +1,9 @@
 #! /usr/bin/env python3
 # vim: expandtab shiftwidth=4 tabstop=4
 
+# Keeping with the original variable names.
+#pylint: disable=invalid-name
+#pylint: disable=line-too-long
 """
 Question 1:
 Run the following command in bitcoin-cli, or parse the raw transaction and calculate the hashes by hand:
@@ -9,6 +12,7 @@ bitcoin-cli decoderawtransaction 010000000001014bd289251780cf66c55ec09706eec00e0
 
 What is the txid of this transaction?
 """
+#pylint: enable=line-too-long
 
 # import json
 from hashlib import sha256
@@ -156,7 +160,9 @@ def back2hex(txstruct, omitsegwit):
     return "".join(retval)
 
 def main():
+    #pylint: disable=line-too-long
     txbytes = "010000000001014bd289251780cf66c55ec09706eec00e031101bb3b7bd0aa9a815136389923e5010000000000000000020065cd1d0000000017a914b4c405153d385a21e5691c8f83fcdae8b97241f587acea645900000000160014db7ac922e011e579ff3f84623b7d9d6944b5c8d3024830450221008b09269cd88bcdc5681a4dddbbbad506ee85f4445418046f6d175f2f380259850220497427ad95e78448434c7d6bcb6d8c1828613c256309ee6ad2da7b0dc3d7e53e0121027a919db019d6ad889c682e446f6b91b7c02fba7f0c9164e331374545adce1ee000000000"
+    #pylint: enable=line-too-long
     segwit_parsed = segwit_parse_transaction(txbytes)
     txbv = back2hex(segwit_parsed, omitsegwit=False)
     assert txbv == txbytes

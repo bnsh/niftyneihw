@@ -2,6 +2,8 @@
 # vim: expandtab shiftwidth=4 tabstop=4
 """Nifty Nei Homework 7"""
 
+#pylint: disable=fixme
+
 import os
 import json
 # import random
@@ -121,7 +123,7 @@ def main():
     # Binesh - This bears further investigation. In niftynei_006 we
     #          we didn't do this... (Actually, it _is_ in niftynei_006
     #          just on line 129.
-    funding_txid_little_endian = bytes.fromhex(
+    dummy_funding_txid_little_endian = bytes.fromhex(
         funding_txid_big_endian)[::-1].hex()
 
     # Remember, we're in regtest so we control block production! Let's mine a block to confirm the funding tx
@@ -138,7 +140,7 @@ def main():
     # input_skeleton = {'txid': '', 'vout': '', 'scriptSig': '', 'sequence': ''}
 
     # But we're in segwit world now, where scriptSigs are always 00!!
-    input_skeleton_segwit = {
+    dummy_input_skeleton_segwit = {
         'txid': '',
         'vout': '',
         'scriptSig': '00',
@@ -162,7 +164,7 @@ def main():
     # TODO: Fill in the following segwit input skeleton with your info
     input_segwit = {
         'txid': res["txid"],
-        'vout': (1).to_bytes(4, 'little').hex(), # Sarah, this was our bug on 2024-11-13
+        'vout': (vout).to_bytes(4, 'little').hex(), # Sarah, this was our bug on 2024-11-13
         'scriptSig': '00',
         'sequence': sequence
     }
@@ -181,12 +183,13 @@ def main():
     # To Unlock this P2WSH we have to provide the same 2 elements we did for the P2SH: the preimage, and the redeem script
     # However! Instead of putting these in the scriptSig, we're going to put them in a new 'witness' section.
     # The witness section skeleton looks like this:
-    witness_skeleton = [
+    dummy_witness_skeleton = [
         [],  # Input1's witness stack
         [],  # Input2's witness stack
         [],  # Input3's Witness stack
     ]
-    # Every input, regardless of its type, will have a witness stack, prefaced by a compact field size stating how many elements are in each stack. If you're paying from a legacy address that has no witness data, that input will have a witness stack of '00'
+    # Every input, regardless of its type, will have a witness stack, prefaced by a compact field size stating how many elements are in each stack.
+    # If you're paying from a legacy address that has no witness data, that input will have a witness stack of '00'
     # Our transaction only has 1 input, and it's a p2wsh input that will have 2 elements in its witness stack: the preimage and the redeem script.
     # So our skeleton for the witness section will look like this:
     # input1_witness_stack_size = '02'

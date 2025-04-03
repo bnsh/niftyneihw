@@ -1,0 +1,152 @@
+I'm getting this error:
+
+```
+/usr/bin/env bitcoin-cli -regtest testmempoolaccept ["020000000001018d84893fc815964f2e4c7d3f0b8709dec280bc0a0b26e46b6b7f6ebcf7f9effe0100000000ffffffff0100ca9a3b00000000160014eaac63ccda6efc7b6b891b4673401476368e8b9102215a65726f20636f6e66206368616e6e656c7320776572652061206d697374616b6523a8208539f59ef34c750ab9d9f2a1071f2cd7542e318955be8e9e9eab5ab32037b2de8700000000"]
+[
+  {
+    "txid": "75144efdedc17ff332581eca8e13a24f359ab729cd031610baee3b437638b1f9",
+    "wtxid": "3a1aaf562adb01925fa8e25c29d65043d6ab7a37b49c458bf39d5f4518deca76",
+    "allowed": false,
+    "reject-reason": "missing-inputs"
+  }
+]
+```
+
+I don't understand... Here's how I've manually decrypted this:
+
+```decoded
+	Version: 02000000
+	Segwit marker+flag: 0001
+	Input Count: 01
+		txid: 8d84893fc815964f2e4c7d3f0b8709dec280bc0a0b26e46b6b7f6ebcf7f9effe
+		vout: 01000000
+		scriptPubKey: 00
+		sequence: ffffffff
+	Output Count: 01
+		amount: 00ca9a3b00000000
+		scriptSig: 16 0014eaac63ccda6efc7b6b891b4673401476368e8b91
+	Witness Count: 02
+		item1: 21 5a65726f20636f6e66206368616e6e656c7320776572652061206d697374616b65
+		item2: 23 a8208539f59ef34c750ab9d9f2a1071f2cd7542e318955be8e9e9eab5ab32037b2de87
+	Locktime: 00000000
+```
+
+But, I'm not understanding these two things for txid 8d84893fc815964f2e4c7d3f0b8709dec280bc0a0b26e46b6b7f6ebcf7f9effe...
+
+```
+~/B58-TXs-Class-HW-2-Pay-to-Witness-Script-Hash$ bitcoin-cli -regtest gettransaction 8d84893fc815964f2e4c7d3f0b8709dec280bc0a0b26e46b6b7f6ebcf7f9effe
+{
+  "amount": -10.00000250,
+  "fee": -0.00000142,
+  "confirmations": 1,
+  "blockhash": "71d5a4a3d401d9d0b5f8635ef0f11c34bebd03ca17afd5933c03fecff9439bc5",
+  "blockheight": 102,
+  "blockindex": 1,
+  "blocktime": 1733371424,
+  "txid": "8d84893fc815964f2e4c7d3f0b8709dec280bc0a0b26e46b6b7f6ebcf7f9effe",
+  "walletconflicts": [
+  ],
+  "time": 1733371413,
+  "timereceived": 1733371413,
+  "bip125-replaceable": "no",
+  "details": [
+    {
+      "address": "2NA43ZEeBdX1J2cLcASdR2HNmWMVb35DXWS",
+      "category": "send",
+      "amount": -10.00000250,
+      "vout": 1,
+      "fee": -0.00000142,
+      "abandoned": false
+    }
+  ],
+  "hex": "02000000000101c679c32415675460fecb87e76ddbade4c9fe07f918fff1ef74d999a0fc47af5d0000000000feffffff0278266bee00000000160014b0d5c6958eda74ea683d03b1d6d0cb1986c31003faca9a3b0000000017a914b85cdacb5a53ecfcb739a9a0a213ec18d08c8972870247304402201ea06d53a2c5fafe26138b616f1ff8cf62b82a1e85178cc60ea515d29c31253702201e3a953ed08d22fe8d2ca48f24d6318be2294d4a65fbfa4f26039dbdba436e590121026058887e52cb6ad4c54aef4b6785cfb15da610592e9c773ea26fa51048d3888a65000000"
+}
+~/B58-TXs-Class-HW-2-Pay-to-Witness-Script-Hash$ 
+~/B58-TXs-Class-HW-2-Pay-to-Witness-Script-Hash$ bitcoin-cli -regtest listunspent 0 16777216
+[
+  {
+    "txid": "7e936cdc6fac5d2d94858a555bd9cc51a0f56685c18a1eb7b7ef4f7c2e90fcc4",
+    "vout": 0,
+    "address": "bcrt1qysc6sfhr8vuzyny57x54quwx0nfg8s2swf3vdy",
+    "label": "",
+    "scriptPubKey": "00142431a826e33b38224c94f1a95071c67cd283c150",
+    "amount": 50.00000000,
+    "confirmations": 101,
+    "spendable": true,
+    "solvable": true,
+    "desc": "wpkh([24a120db/0'/0'/1']03cad45c3f9af6e5c354b576edd4ee6cad8cd9a95da46e89170bdcbc9b1e7a2ea7)#rlfc4wlx",
+    "safe": true
+  },
+  {
+    "txid": "8d84893fc815964f2e4c7d3f0b8709dec280bc0a0b26e46b6b7f6ebcf7f9effe",
+    "vout": 0,
+    "address": "bcrt1qkr2ud9vwmf6w56paqwcad5xtrxrvxyqr00vc8d",
+    "scriptPubKey": "0014b0d5c6958eda74ea683d03b1d6d0cb1986c31003",
+    "amount": 39.99999608,
+    "confirmations": 1,
+    "spendable": true,
+    "solvable": true,
+    "desc": "wpkh([24a120db/0'/1'/1']0267cca32ea87c3365ac2b47dd9b1079ac89065e9ba02601c162423f167c3b5520)#mw05hpa5",
+    "safe": true
+  }
+]
+```
+
+And, I did this in the code:
+
+```python3
+    with open("dump.json", "wt", encoding="utf-8") as jsfp:
+        json.dump({
+            "res": res,
+            "decodescript": decodescript
+        },
+                  jsfp,
+                  indent=4,
+                  sort_keys=False)
+```
+
+And here is dump.json:
+
+```dump.json
+{
+    "res": {
+        "amount": -10.0000025,
+        "fee": -1.42e-06,
+        "confirmations": 1,
+        "blockhash": "71d5a4a3d401d9d0b5f8635ef0f11c34bebd03ca17afd5933c03fecff9439bc5",
+        "blockheight": 102,
+        "blockindex": 1,
+        "blocktime": 1733371424,
+        "txid": "8d84893fc815964f2e4c7d3f0b8709dec280bc0a0b26e46b6b7f6ebcf7f9effe",
+        "walletconflicts": [],
+        "time": 1733371413,
+        "timereceived": 1733371413,
+        "bip125-replaceable": "no",
+        "details": [
+            {
+                "address": "2NA43ZEeBdX1J2cLcASdR2HNmWMVb35DXWS",
+                "category": "send",
+                "amount": -10.0000025,
+                "vout": 1,
+                "fee": -1.42e-06,
+                "abandoned": false
+            }
+        ],
+        "hex": "02000000000101c679c32415675460fecb87e76ddbade4c9fe07f918fff1ef74d999a0fc47af5d0000000000feffffff0278266bee00000000160014b0d5c6958eda74ea683d03b1d6d0cb1986c31003faca9a3b0000000017a914b85cdacb5a53ecfcb739a9a0a213ec18d08c8972870247304402201ea06d53a2c5fafe26138b616f1ff8cf62b82a1e85178cc60ea515d29c31253702201e3a953ed08d22fe8d2ca48f24d6318be2294d4a65fbfa4f26039dbdba436e590121026058887e52cb6ad4c54aef4b6785cfb15da610592e9c773ea26fa51048d3888a65000000"
+    },
+    "decodescript": {
+        "asm": "OP_SHA256 8539f59ef34c750ab9d9f2a1071f2cd7542e318955be8e9e9eab5ab32037b2de OP_EQUAL",
+        "type": "nonstandard",
+        "p2sh": "2N2e8qbivkvdrC7YQ5JGGY6NN9T5Ww6y7SX",
+        "segwit": {
+            "asm": "0 e52b4f96549f3cbbfe598d76323a8fc32be472fe563dac9bbafb749e47d755c4",
+            "hex": "0020e52b4f96549f3cbbfe598d76323a8fc32be472fe563dac9bbafb749e47d755c4",
+            "address": "bcrt1qu545l9j5nu7thlje34mryw50cv47guh72c76exa6ld6fu37h2hzqjcesav",
+            "type": "witness_v0_scripthash",
+            "p2sh-segwit": "2NA43ZEeBdX1J2cLcASdR2HNmWMVb35DXWS"
+        }
+    }
+}
+```
+
+ARGH.
