@@ -13,7 +13,7 @@
 
 from typing import Tuple
 
-# from coincurve import PrivateKey, PublicKey
+from coincurve import PrivateKey
 
 class ECMath:
     p = 2**256 - 2**32 - 977 # this is also from SEC256k1 https://secg.org/sec2-v2.pdf
@@ -126,8 +126,8 @@ def compressed_to_point(compressed_key):
 # Challenge #6
 def find_privkey(compressed_key):
     priv_int = 1
-    while (tbv := find_compressed_key(priv_int)) != compressed_key:
-        print(f"{priv_int:d} {tbv:s} != {compressed_key:s}")
+    while (dummy_tbv := find_compressed_key(priv_int)) != compressed_key:
+        # print(f"{priv_int:d} {tbv:s} != {compressed_key:s}")
         priv_int += 1
     return priv_int
 
@@ -136,6 +136,30 @@ def main():
     # press the Run key up top to run this code.
     pubkey = "037caa72b37a8ab3bd0bac031a47606f8917d9f42c6ec2d2fb429fd9904a381f34"
     print(find_privkey(pubkey))
+
+    # Quiz
+    print(compressed_to_point("021ee150c33f1b3c0a771eba4043f9703711818367fbbf3d493dc659c0a5759a1f"))
+    # (13967483450616349477689229903680325848506681557199731546200209960089289071135, 95089823123371960764939697553919321809797997505518524899406025955076401968704) Correct
+
+    targets = ("04e9234", "041c6f9", "044193e", "045edd5")
+    for idx in range(1, 1024):
+        res = find_uncompressed_key(idx)
+        for target in targets:
+            if res.startswith(target):
+                print(idx, res)
+
+    print(find_uncompressed_key(615))
+    # 0448471331eac4867028fa6642a76ca6c53380c1d90f52a4b2ea640d47f159af0ab4ea854693fde01cfb903a3118bb61f5c5047b94705a714d5b586d47a0142704 This is _not_ one of the choices and in fact it seems like the key that's correct is for key=69
+    # The correct answer is the answer for priv_int=69
+    # 69 045edd5cc23c51e87a497ca815d5dce0f8ab52554f849ed8995de64c5f34ce7143efae9c8dbc14130661e8cec030c89ad0c13c66c0d17a2905cdc706ab7399a868
+
+    # I guess we just try all the keys listed in the options.
+    target = "039ab8636783794de771b8ae530484154c0b4723237c89c2b851af73c8d6f5dc62"
+    cands = (8281828727, 19991, 188282, 999999999)
+    for cand in cands:
+        if find_compressed_key(cand) == target:
+            print(cand)
+
 
 if __name__ == "__main__":
     main()
