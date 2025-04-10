@@ -13,7 +13,7 @@
 
 from typing import Tuple
 
-from coincurve import PrivateKey
+# from coincurve import PrivateKey
 
 class ECMath:
     p = 2**256 - 2**32 - 977 # this is also from SEC256k1 https://secg.org/sec2-v2.pdf
