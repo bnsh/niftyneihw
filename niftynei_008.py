@@ -19,21 +19,23 @@ class ECMath:
     p = 2**256 - 2**32 - 977 # this is also from SEC256k1 https://secg.org/sec2-v2.pdf
     Gx = int("79BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798", 16)
     Gy = int("483ADA7726A3C4655DA4FBFC0E1108A8FD17B448A68554199C47D08FFB10D4B8", 16)
+    n = int("FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141", 16)
 
     a = 0
     b = 7
 
     @classmethod
-    def modinv(cls, a):
+    def modinv(cls, a, denominator=None):
+        denominator = denominator or cls.p
         if a == 0:
             raise ZeroDivisionError('division by zero')
         lm, hm = 1, 0
-        low, high = a % cls.p, cls.p
+        low, high = a % denominator, denominator
         while low > 1:
             r = high // low
             nm, new = hm - lm * r, high - low * r
             lm, low, hm, high = nm, new, lm, low
-        return lm % cls.p
+        return lm % denominator
 
 
     @classmethod
