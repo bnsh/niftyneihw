@@ -29,6 +29,7 @@ def main():
 
     # upper = 0xfffffffffffffffffffffffffffffffebaaedce6af48a03bbfd25e8cd0364141
     private_key = 0x402a5527a83efd05e29e753432fdbb25b8b6654608592626abf5769d60da81f7 # secrets.randbelow(upper)
+    private_key = 3284391938475821934745
     public_key = find_compressed_key(private_key)
     len_public_key = len(public_key) // 2
     op_checksig = mnemonic2code["OP_CHECKSIG"]
@@ -48,9 +49,11 @@ def main():
     locktime: 00000000
     """
 
-    #TODO: I _think_ lock_tx_parts is "done"... I think where we have to go from here
+    #      I _think_ lock_tx_parts is "done"... I think where we have to go from here
     #      is to actually lock up this transaction. Then the second part of all this
     #      is to _spend_ this money in _another_ transaction.
+    #      Unfortunately, the tests in Nifty's replit don't seem to work anymore,
+    #      so we're leaving this incomplete... And ourselves unsatisfied.
 
     dummy_p2pk_info = {
       # Fill this in with your private key
@@ -69,6 +72,9 @@ def main():
 
     print("Locking TX:", cleanup_tx(lock_tx_parts))
     print("Spending TX:", cleanup_tx(spend_tx_parts))
+    print(f"pubkey: {public_key:s}")
+    print(f"p2pk_script: {p2pk_script:s}")
+    print(lock_tx_parts)
 
 if __name__ == "__main__":
     main()
